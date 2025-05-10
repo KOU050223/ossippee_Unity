@@ -6,9 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Uomi/MenuScene_copy.unity
+    path: Assets/Develop/Uomi/MenuScene_copy.unity
     guid: aa5d8ca522ab7426183363b0654b6c67
   - enabled: 1
-    path: Assets/Ebi/PlayScene_copy.unity
+    path: Assets/Develop/Ebi/PlayScene_copy.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects: {}
