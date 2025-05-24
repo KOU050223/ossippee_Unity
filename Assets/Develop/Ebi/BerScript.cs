@@ -15,7 +15,7 @@ public class Bar : MonoBehaviour
 
     private GameObject pittariImage;
     private GameObject yarinaosuImage;
-    private GameObject beerSosogu; // ← キャッシュする変数
+    private GameObject beerSosogu;
 
     void Start()
     {
@@ -30,13 +30,13 @@ public class Bar : MonoBehaviour
 
         pittariImage = GameObject.Find("PittariHaikei");
         yarinaosuImage = GameObject.Find("Yarinaosu");
-        beerSosogu = GameObject.Find("BeerSosogu"); // ← 一度だけ取得
+        beerSosogu = GameObject.Find("BeerSosogu");
 
         if (pittariImage != null) pittariImage.SetActive(false);
         if (yarinaosuImage != null) yarinaosuImage.SetActive(false);
         if (beerSosogu != null)
         {
-            beerSosogu.SetActive(true); // 初期状態で表示
+            beerSosogu.SetActive(true);
         }
         else
         {
@@ -78,35 +78,52 @@ public class Bar : MonoBehaviour
         }
     }
 
-    void Update()
+    // ← UIのStopボタンから呼ばれる
+public void OnStopButtonClicked()
+{
+    isMoving = false;
+
+    if (transform.position.y >= 0.2f && transform.position.y <= 0.4f)
     {
-        if (Input.GetMouseButtonDown(0))
+        Debug.Log("Hit");
+        if (pittariImage != null) pittariImage.SetActive(true);
+
+        GameObject startButton = GameObject.Find("Start");
+        if (startButton != null)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
-            if (hit.collider != null && hit.collider.gameObject.name == "Stop")
-            {
-                isMoving = false;
-
-                if (transform.position.y >= 0.2f && transform.position.y <= 0.4f)
-                {
-                    Debug.Log("Hit");
-                    if (pittariImage != null) pittariImage.SetActive(true);
-                }
-                else
-                {
-                    Debug.Log("Miss");
-                    if (yarinaosuImage != null) yarinaosuImage.SetActive(true);
-                }
-
-                // キャッシュを使って非表示にする
-                if (beerSosogu != null)
-                {
-                    beerSosogu.SetActive(false);
-                }
-            }
+            startButton.SetActive(false);
+            Debug.Log("Startボタンを非表示にしました");
+        }
+        else
+        {
+            Debug.LogWarning("StartButton が見つかりません");
         }
     }
+    else
+    {
+        Debug.Log("Miss");
+        if (yarinaosuImage != null) yarinaosuImage.SetActive(true);
+    }
+
+    if (beerSosogu != null)
+    {
+        beerSosogu.SetActive(false);
+    }
+
+    // ✅ Stopボタンを非表示
+    GameObject stopButton = GameObject.Find("Stop");
+    if (stopButton != null)
+    {
+        stopButton.SetActive(false);
+        Debug.Log("Stopボタンを非表示にしました");
+    }
+    else
+    {
+        Debug.LogWarning("Stopボタンが見つかりません");
+    }
+}
+
+
 
     public void ResetBar()
     {
@@ -122,7 +139,6 @@ public class Bar : MonoBehaviour
         if (pittariImage != null) pittariImage.SetActive(false);
         if (yarinaosuImage != null) yarinaosuImage.SetActive(false);
 
-        // キャッシュを使って再表示
         if (beerSosogu != null)
         {
             beerSosogu.SetActive(true);
